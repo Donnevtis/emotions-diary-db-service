@@ -1,22 +1,18 @@
-import { MiBtoByte } from './utils';
-import environment from './environment';
-import { deploy } from './function-service';
-import { FunctionConfig } from './types';
+import { MiBtoByte } from './utils'
+import environment from './environment'
+import { deploy } from './function-service'
+import { FunctionConfig } from './types'
 
-const { FUNCTION_ID, SA_ID, DB_ENDPOINT, REGION, LOCKBOX_ID, LOCKBOX_VERSION } = environment;
+const { FUNCTION_ID, SA_ID, LOCKBOX_ID, LOCKBOX_VERSION } = environment
 
 const partial: FunctionConfig = {
   functionId: FUNCTION_ID,
   runtime: 'nodejs16',
   entrypoint: 'index.handler',
   resources: {
-    memory: MiBtoByte(128),
+    memory: MiBtoByte(256),
   },
-  executionTimeout: { seconds: 60 },
-  environment: {
-    DB_ENDPOINT,
-    REGION,
-  },
+  executionTimeout: { seconds: 10 },
   serviceAccountId: SA_ID,
   secrets: [
     {
@@ -31,7 +27,19 @@ const partial: FunctionConfig = {
       environmentVariable: 'AWS_SECRET_ACCESS_KEY',
       key: 'SA_KEY_SECRET',
     },
+    {
+      id: LOCKBOX_ID,
+      versionId: LOCKBOX_VERSION,
+      environmentVariable: 'DB_ENDPOINT',
+      key: 'DB_ENDPOINT',
+    },
+    {
+      id: LOCKBOX_ID,
+      versionId: LOCKBOX_VERSION,
+      environmentVariable: 'REGION',
+      key: 'REGION',
+    },
   ],
-};
+}
 
-deploy(partial, 'dist/');
+deploy(partial, 'dist/')

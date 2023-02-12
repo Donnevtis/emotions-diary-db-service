@@ -1,7 +1,12 @@
-import Ajv, { JSONSchemaType } from 'ajv';
-import { ChatMemberStatus, RecievedUser, UserState, UserTimersSettings } from './types';
+import Ajv, { JSONSchemaType } from 'ajv'
+import {
+  ChatMemberStatus,
+  RecievedUser,
+  UserState,
+  UserTimersSettings,
+} from './types'
 
-const ajv = new Ajv();
+const ajv = new Ajv()
 
 const userSchema: JSONSchemaType<RecievedUser> = {
   type: 'object',
@@ -16,36 +21,46 @@ const userSchema: JSONSchemaType<RecievedUser> = {
   },
   required: ['id', 'username'],
   additionalProperties: true,
-};
+}
 
-export const validateUser = ajv.compile(userSchema);
+export const validateUser = ajv.compile(userSchema)
 
 const stateSchema: JSONSchemaType<UserState> = {
   type: 'object',
   properties: {
-    emotion: { type: 'string' },
+    emotion: { type: 'string', minLength: 2 },
     energy: { type: 'number' },
-    timestamp: { type: 'string' },
+    timestamp: { type: 'number' },
+    timezone: { type: 'string' },
+    state_id: { type: 'string', nullable: true },
   },
   required: ['emotion', 'timestamp', 'energy'],
-};
+}
 
-export const validateState = ajv.compile(stateSchema);
+export const validateState = ajv.compile(stateSchema)
 
 const settingsSchema: JSONSchemaType<UserTimersSettings> = {
   type: 'object',
   properties: {
+    user_id: { type: 'number' },
     reminder_timers: { type: 'array', items: { type: 'string' } },
     time_offset: { type: 'number' },
     notify: { type: 'boolean' },
+    language_code: { type: 'string' },
   },
-  required: ['reminder_timers', 'time_offset', 'notify'],
-};
+  required: [
+    'user_id',
+    'reminder_timers',
+    'time_offset',
+    'notify',
+    'language_code',
+  ],
+}
 
-export const validateSettings = ajv.compile(settingsSchema);
+export const validateSettings = ajv.compile(settingsSchema)
 
 const userStatusSchema: JSONSchemaType<ChatMemberStatus> = {
   type: 'string',
-};
+}
 
-export const validateStatus = ajv.compile(userStatusSchema);
+export const validateStatus = ajv.compile(userStatusSchema)

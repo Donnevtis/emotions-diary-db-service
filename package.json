@@ -1,13 +1,15 @@
 {
   "name": "emotion-diary-database-service",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Database service for emotion diary telegram bot",
   "main": "./dist/index.js",
   "scripts": {
     "build": "swc src -d dist",
     "postbuild": "copy package.json dist",
     "publish": "tsx scripts/deploy",
-    "deploy": "npm run build && npm run publish"
+    "predeploy": "tsc --noEmit",
+    "deploy": "npm run build && npm run publish",
+    "check": "npx tsc --noEmit"
   },
   "keywords": [
     "database",
@@ -46,5 +48,12 @@
     "ora": "^6.1.2",
     "tsx": "^3.12.2",
     "typescript": "^4.9.5"
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "arrowParens": "avoid",
+    "endOfLine": "lf"
   }
 }

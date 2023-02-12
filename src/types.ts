@@ -1,40 +1,44 @@
+import { Handler } from '@yandex-cloud/function-types'
+
 export type ChatMemberStatus =
   | 'creator'
   | 'administrator'
   | 'member'
   | 'restricted'
   | 'left'
-  | 'kicked';
+  | 'kicked'
 
 export type RecievedUser = {
-  id: number;
-  username: string;
-  first_name?: string;
-  last_name?: string;
-  is_bot?: boolean;
-  language_code?: string;
-  status?: ChatMemberStatus;
-};
+  id: number
+  username: string
+  first_name?: string
+  last_name?: string
+  is_bot?: boolean
+  language_code?: string
+  status?: ChatMemberStatus
+}
 export type StoreUserInfo = {
-  PK: string;
-  SK: string;
-  registration_date: number;
-};
-export type StoredUser = RecievedUser & StoreUserInfo;
+  PK: string
+  SK: string
+  registration_date: number
+}
+export type StoredUser = RecievedUser & StoreUserInfo
 
 export type UserTimersSettings = {
-  reminder_timers: Array<string>;
-  time_offset: number;
-  notify: boolean;
-};
+  user_id: number
+  reminder_timers: Array<string>
+  time_offset: number
+  notify: boolean
+  language_code: string
+}
 
 export type UserState = {
-  emotion: string;
-  energy: number;
-  timestamp: string;
-};
-
-import { Handler } from '@yandex-cloud/function-types';
+  emotion: string
+  energy: number
+  timestamp: number
+  timezone: string
+  state_id?: string
+}
 
 export enum PATHS {
   settings = 'settings',
@@ -48,27 +52,28 @@ export enum Command {
   getUser = 'getUser',
   putUser = 'putUser',
   updateUserStatus = 'updateUserStatus',
+  findUsersByTimer = 'findUsersByTimer',
 }
 
-type HandlerParameters = Parameters<Handler.Http>;
+type HandlerParameters = Parameters<Handler.Http>
 
 type RequestContext = {
   requestContext: {
     apiGateway?: {
-      operationContext?: { command?: Command };
-    };
+      operationContext?: { command?: Command }
+    }
     authorizer?: {
-      userId?: number;
-    };
-  };
-};
+      userId?: number
+    }
+  }
+}
 
 type Return = {
-  statusCode: number;
-  body: string;
-};
+  statusCode: number
+  body: string
+}
 
 export type Handler = (
   event: HandlerParameters[0] & RequestContext,
   context: HandlerParameters[1],
-) => Promise<Return>;
+) => Promise<Return>
