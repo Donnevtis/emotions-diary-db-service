@@ -46,15 +46,8 @@ const settingsSchema: JSONSchemaType<UserTimersSettings> = {
     reminder_timers: { type: 'array', items: { type: 'string' } },
     time_offset: { type: 'number' },
     notify: { type: 'boolean' },
-    language_code: { type: 'string' },
   },
-  required: [
-    'user_id',
-    'reminder_timers',
-    'time_offset',
-    'notify',
-    'language_code',
-  ],
+  required: ['user_id', 'reminder_timers', 'time_offset', 'notify'],
 }
 
 export const validateSettings = ajv.compile(settingsSchema)

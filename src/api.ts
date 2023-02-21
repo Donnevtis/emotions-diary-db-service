@@ -162,8 +162,7 @@ export const getSettingsById = async (id: number) => {
         PK: `user#${id}`,
         SK: 'reminders',
       }),
-      ProjectionExpression:
-        'reminder_timers, time_offset, notify, language_code',
+      ProjectionExpression: 'reminder_timers, time_offset, notify',
     })
 
     const { Item } = await dynamodb.send(input)
@@ -216,7 +215,7 @@ export const updateSettings = (id: number, settings: UserTimersSettings) => {
     })
   }
 
-  const { reminder_timers, time_offset, notify, language_code } = settings
+  const { reminder_timers, time_offset, notify } = settings
 
   return dynamodb
     .send(
@@ -227,13 +226,12 @@ export const updateSettings = (id: number, settings: UserTimersSettings) => {
           SK: 'reminders',
         }),
         UpdateExpression:
-          'set reminder_timers = :r, user_id = :u, time_offset = :t, notify = :n, language_code = :l',
+          'set reminder_timers = :r, user_id = :u, time_offset = :t, notify = :n',
         ExpressionAttributeValues: marshall({
           ':r': reminder_timers,
           ':t': time_offset,
           ':n': notify,
           ':u': id,
-          ':l': language_code,
         }),
       }),
     )
