@@ -1,6 +1,6 @@
 {
   "name": "emotion-diary-database-service",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Database service for emotion diary telegram bot",
   "main": "./dist/index.js",
   "scripts": {
