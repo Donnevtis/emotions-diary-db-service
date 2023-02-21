@@ -3,6 +3,7 @@ import {
   findUsersByTimer,
   getSettingsById,
   getStateById,
+  putSettings,
   putUser,
   setStatus,
   updateSettings,
@@ -42,6 +43,9 @@ export const handler: Handler = async ({
       }
       case Command.getSettings: {
         return response(await getSettingsById(id))
+      }
+      case Command.putSettings: {
+        return response(await putSettings(id, JSON.parse(body)))
       }
       case Command.updateSettings: {
         await updateSettings(id, JSON.parse(body))

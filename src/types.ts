@@ -29,7 +29,6 @@ export type UserTimersSettings = {
   reminder_timers: Array<string>
   time_offset: number
   notify: boolean
-  language_code: string
 }
 
 export type UserState = {
@@ -45,12 +44,13 @@ export enum PATHS {
 }
 
 export enum Command {
-  getState = 'getState',
-  getSettings = 'getSettings',
-  putState = 'putState',
-  updateSettings = 'updateSettings',
   getUser = 'getUser',
   putUser = 'putUser',
+  getState = 'getState',
+  putState = 'putState',
+  getSettings = 'getSettings',
+  putSettings = 'putSettings',
+  updateSettings = 'updateSettings',
   updateUserStatus = 'updateUserStatus',
   findUsersByTimer = 'findUsersByTimer',
 }

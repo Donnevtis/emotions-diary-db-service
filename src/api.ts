@@ -176,6 +176,39 @@ export const getSettingsById = async (id: number) => {
   }
 }
 
+export const putSettings = (user_id: number, settings: UserTimersSettings) => {
+  if (!validateSettings(settings)) {
+    throw new Error('Validation exception: invalid user settings', {
+      cause: validateSettings.errors,
+    })
+  }
+
+  const { reminder_timers, time_offset, notify } = settings
+
+  return dynamodb
+    .send(
+      new PutItemCommand({
+        TableName: 'Users',
+        Item: marshall({
+          PK: `user#${user_id}`,
+          SK: 'reminders',
+          reminder_timers,
+          time_offset,
+          notify,
+          user_id,
+        }),
+        ConditionExpression: 'attribute_not_exists(reminder_timers)',
+      }),
+    )
+    .catch(error => {
+      if (error instanceof Error && error.name === CONDITION_CHECK_FAILED) {
+        return 'Attribute already exists'
+      }
+
+      return dbErrorHandler(error, updateSettings.name, settings)
+    })
+}
+
 export const updateSettings = (id: number, settings: UserTimersSettings) => {
   if (!validateSettings(settings)) {
     throw new Error('Validation exception: invalid user settings', {
