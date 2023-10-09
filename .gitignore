@@ -4,3 +4,4 @@ dist
 
 .env
 gateway.yaml
+table.json
